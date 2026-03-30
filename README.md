@@ -85,4 +85,24 @@ This is the place for you to write reflections:
 
 #### Reflection Publisher-2
 
+1. Kenapa kita perlu memisahkan Service dan Repository dari Model?
+Pemisahan ini mengikuti prinsip Separation of Concerns dan Single Responsibility Principle.
+
+- Model hanya fokus pada struktur data.
+- Repository fokus pada cara menyimpan dan mengambil data (database logic).
+- Service fokus pada aturan bisnis (business logic), seperti validasi data atau koordinasi antar repository.
+
+Dengan memisahkan ketiganya, kode jadi lebih rapi, lebih mudah dites secara terpisah (unit testing), dan jika kita ingin mengganti cara penyimpanan data (misal dari memory ke database asli), kita cukup mengubah bagian Repository tanpa merusak logika bisnis di Service.
+
+2. Apa yang terjadi jika kita hanya menggunakan Model?
+Jika hanya menggunakan Model, satu file/struct akan menjadi sangat besar dan kompleks (Fat Model). Model tersebut harus mengurusi struktur data, koneksi database, sekaligus logika bisnis. Hal ini membuat tingkat ketergantungan (coupling) antar komponen sangat tinggi. Misalnya, jika ada perubahan pada cara Notification dikirim, kita mungkin tidak sengaja merusak cara Subscriber disimpan karena semuanya menumpuk di satu tempat. Kode akan sangat sulit untuk dibaca dan dipelihara seiring berkembangnya aplikasi.
+
+3. Pengalaman menggunakan Postman dan fitur yang membantu:
+Postman sangat membantu dalam mempercepat proses pengembangan API karena kita tidak perlu membuat front-end atau menulis skrip manual untuk mengetes setiap fungsi. Fitur yang sangat berguna antara lain:
+
+- Collections: Mengelompokkan request sehingga rapi (seperti folder Publisher dan Receiver).
+- Environments: Memungkinkan kita mengganti URL (misal dari localhost ke production) dengan satu klik.
+- Body Request (JSON): Memudahkan pengiriman data kompleks untuk testing fungsi POST.
+- History: Membantu melihat kembali request apa saja yang sudah kita coba sebelumnya.
+
 #### Reflection Publisher-3
