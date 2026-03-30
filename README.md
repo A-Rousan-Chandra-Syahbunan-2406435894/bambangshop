@@ -48,15 +48,15 @@ You can install Postman via this website: https://www.postman.com/downloads/
     (You might want to use `cargo check` if you only need to verify your work without running the app.)
 
 ## Mandatory Checklists (Publisher)
--   [ ] Clone https://gitlab.com/ichlaffterlalu/bambangshop to a new repository.
+-   [x] Clone https://gitlab.com/ichlaffterlalu/bambangshop to a new repository.
 -   **STAGE 1: Implement models and repositories**
-    -   [ ] Commit: `Create Subscriber model struct.`
-    -   [ ] Commit: `Create Notification model struct.`
-    -   [ ] Commit: `Create Subscriber database and Subscriber repository struct skeleton.`
-    -   [ ] Commit: `Implement add function in Subscriber repository.`
-    -   [ ] Commit: `Implement list_all function in Subscriber repository.`
-    -   [ ] Commit: `Implement delete function in Subscriber repository.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
+    -   [x] Commit: `Create Subscriber model struct.`
+    -   [x] Commit: `Create Notification model struct.`
+    -   [x] Commit: `Create Subscriber database and Subscriber repository struct skeleton.`
+    -   [x] Commit: `Implement add function in Subscriber repository.`
+    -   [x] Commit: `Implement list_all function in Subscriber repository.`
+    -   [x] Commit: `Implement delete function in Subscriber repository.`
+    -   [x] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
 -   **STAGE 2: Implement services and controllers**
     -   [ ] Commit: `Create Notification service struct skeleton.`
     -   [ ] Commit: `Implement subscribe function in Notification service.`
@@ -77,6 +77,11 @@ This is the place for you to write reflections:
 ### Mandatory (Publisher) Reflections
 
 #### Reflection Publisher-1
+1. Dalam kasus ini, sebuah Model Struct sudah cukup karena semua subscriber kita saat ini memiliki perilaku yang sama, yaitu menerima notifikasi via URL (webhook). Kecuali jika kita ingin subscriber yang bermacam-macam (misal ada yang lewat Email, SMS, dsb), barulah kita butuh Trait.
+
+2. Menggunakan DashMap jauh lebih baik karena kita butuh keunikan (berdasarkan URL). DashMap mempermudah proses pencarian dan penghapusan subscriber secara instan (O(1)), sedangkan Vec akan butuh waktu lebih lama (O(n)) karena harus mengecek satu-satu untuk memastikan tidak ada duplikasi.
+
+3. Kita sebenarnya sudah menggunakan pola Singleton (melalui lazy_static!). Namun, Rust sangat ketat soal keamanan data antar thread. DashMap tetap dibutuhkan karena ia memberikan keamanan (thread-safe) saat beberapa proses mencoba membaca/menulis ke database secara bersamaan tanpa menyebabkan error atau data corrupt.
 
 #### Reflection Publisher-2
 
