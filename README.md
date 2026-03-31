@@ -85,24 +85,10 @@ This is the place for you to write reflections:
 
 #### Reflection Publisher-2
 
-1. Kenapa kita perlu memisahkan Service dan Repository dari Model?
-Pemisahan ini mengikuti prinsip Separation of Concerns dan Single Responsibility Principle.
+1. Memisahkan Service dan Repository dari Model itu penting buat diterapin biar kode kita ngikutin prinsip Single Responsibility. Jadi pembagian tugasnya jelas: Model cuma ngurusin bentuk data, Repository fokus ke urusan database (simpan/ambil data), dan Service yang jalanin logika bisnisnya. Kalau dipisah begini, kodenya jauh lebih rapi, gampang di-test, dan kalau misal nanti mau ganti jenis database, kita cuma perlu ngubah kode di bagian Repository aja tanpa harus ngerombak logika bisnis di Service.
 
-- Model hanya fokus pada struktur data.
-- Repository fokus pada cara menyimpan dan mengambil data (database logic).
-- Service fokus pada aturan bisnis (business logic), seperti validasi data atau koordinasi antar repository.
+2. Kalau semuanya cuma digabung di dalam Model (biasa disebut Fat Model), kodenya bakal jadi sangat bengkak dan berantakan karena harus ngurusin struktur data, koneksi database, sampai logika bisnis sekaligus. Ketergantungan (coupling) antar komponen juga jadi terlalu tinggi. Efek buruknya, kalau kita mau ngubah cara kerja Notifikasi, bisa-bisa malah bikin error di bagian penyimpanan Subscriber karena semuanya numpuk di satu file. Intinya kodenya bakal susah banget dibaca dan di-maintain seiring berjalannya waktu.
 
-Dengan memisahkan ketiganya, kode jadi lebih rapi, lebih mudah dites secara terpisah (unit testing), dan jika kita ingin mengganti cara penyimpanan data (misal dari memory ke database asli), kita cukup mengubah bagian Repository tanpa merusak logika bisnis di Service.
-
-2. Apa yang terjadi jika kita hanya menggunakan Model?
-Jika hanya menggunakan Model, satu file/struct akan menjadi sangat besar dan kompleks (Fat Model). Model tersebut harus mengurusi struktur data, koneksi database, sekaligus logika bisnis. Hal ini membuat tingkat ketergantungan (coupling) antar komponen sangat tinggi. Misalnya, jika ada perubahan pada cara Notification dikirim, kita mungkin tidak sengaja merusak cara Subscriber disimpan karena semuanya menumpuk di satu tempat. Kode akan sangat sulit untuk dibaca dan dipelihara seiring berkembangnya aplikasi.
-
-3. Pengalaman menggunakan Postman dan fitur yang membantu:
-Postman sangat membantu dalam mempercepat proses pengembangan API karena kita tidak perlu membuat front-end atau menulis skrip manual untuk mengetes setiap fungsi. Fitur yang sangat berguna antara lain:
-
-- Collections: Mengelompokkan request sehingga rapi (seperti folder Publisher dan Receiver).
-- Environments: Memungkinkan kita mengganti URL (misal dari localhost ke production) dengan satu klik.
-- Body Request (JSON): Memudahkan pengiriman data kompleks untuk testing fungsi POST.
-- History: Membantu melihat kembali request apa saja yang sudah kita coba sebelumnya.
+3. Postman ngebantu banget buat ngetes API dengan cepet karena kita nggak perlu repot-repot bikin front-end dulu buat ngecek fungsi yang dibuat. Fitur yang paling kerasa gunanya itu Collections buat ngerapiin request per folder biar gampang dicari, sama fitur Body Request (JSON) yang bikin praktis banget pas mau ngirim data kompleks buat ngetes method POST. Selain itu, ngetes juga jadi lebih cepet karena ada History buat ngecek ulang request yang udah pernah dicanlankan sebelumnya.
 
 #### Reflection Publisher-3
