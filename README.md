@@ -65,11 +65,11 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [x] Commit: `Implement unsubscribe function in Notification controller.`
     -   [x] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
 -   **STAGE 3: Implement notification mechanism**
-    -   [ ] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
-    -   [ ] Commit: `Implement notify function in Notification service to notify each Subscriber.`
-    -   [ ] Commit: `Implement publish function in Program service and Program controller.`
-    -   [ ] Commit: `Edit Product service methods to call notify after create/delete.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-3" questions in this README.
+    -   [x] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
+    -   [x] Commit: `Implement notify function in Notification service to notify each Subscriber.`
+    -   [x] Commit: `Implement publish function in Program service and Program controller.`
+    -   [x] Commit: `Edit Product service methods to call notify after create/delete.`
+    -   [x] Write answers of your learning module's "Reflection Publisher-3" questions in this README.
 
 ## Your Reflections
 This is the place for you to write reflections:
@@ -92,3 +92,9 @@ This is the place for you to write reflections:
 3. Postman ngebantu banget buat ngetes API dengan cepet karena kita nggak perlu repot-repot bikin front-end dulu buat ngecek fungsi yang dibuat. Fitur yang paling kerasa gunanya itu Collections buat ngerapiin request per folder biar gampang dicari, sama fitur Body Request (JSON) yang bikin praktis banget pas mau ngirim data kompleks buat ngetes method POST. Selain itu, ngetes juga jadi lebih cepet karena ada History buat ngecek ulang request yang udah pernah dicanlankan sebelumnya.
 
 #### Reflection Publisher-3
+
+1. Di tutorial ini, kita jelas banget pakai variasi Push model dari Observer Pattern. Kelihatan dari cara kerjanya, di mana setiap kali ada event baru (kayak Pak Bambang nambahin atau nghapus produk), si Publisher (BambangShop) yang secara aktif mendorong alias nge-push data notifikasi itu langsung ke URL masing-masing Subscriber lewat HTTP POST request. Jadi si Subscriber ini sifatnya pasif, cuma tinggal nunggu aja sampai ada kiriman data masuk ke endpoint mereka tanpa harus nanya-nanya ke server utama.
+
+2. Seandainya kita disuruh pakai variasi Pull model, cara kerjanya bakal kebalik, di mana Subscriber yang harus nanya terus-terusan ke Publisher ("ada barang baru nggak?"). Keuntungannya sih kerjaan server Publisher jadi lebih ringan karena nggak usah ngurusin pengiriman notifikasi ke banyak orang sekaligus, plus data yang ditarik bisa lebih hemat karena Subscriber cuma ngambil info yang bener-bener dia butuhin saat itu. Tapi kerugiannya juga lumayan fatal buat kasus toko online gini. Bakal boros banget resource (kayak CPU dan bandwith) karena Subscriber harus polling (nge-ping server terus-terusan) meskipun sebenarnya lagi nggak ada barang baru. Selain itu, notifikasinya jadi nggak real-time karena seberapa cepet kita tau ada promo baru bakal sangat bergantung sama seberapa sering frekuensi kita ngecek ke servernya.
+
+3. Multi-threading pakai thread::spawn itu krusial banget di proses pengiriman notifikasi ini. Kalau kita mutusin buat nggak pake itu, proses pengiriman notifikasinya bakal jalan secara sekuensial alias ngantri satu-satu. Bayangin aja kalau ada ribuan orang yang subscribe, terus kebetulan URL subscriber yang pertama lagi down atau lemot banget ngeresponnya. Kalau jalan sekuensial, sistem kita bakal stuck nungguin request pertama itu kelar atau timeout dulu, baru bisa lanjut ngirim ke subscriber kedua, ketiga, dan seterusnya. Efek domino ini bakal bikin server BambangShop nge-lag parah (bottleneck) dan tertahan tiap kali Pak Bambang selesai nambahin barang baru. Makanya, multi-threading ini ngebantu banget biar pengiriman notifnya bisa jalan barengan (paralel) di latar belakang tanpa ngeblokir proses utama aplikasinya.
